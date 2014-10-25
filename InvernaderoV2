@@ -1,0 +1,94 @@
+#include "DHT.h"
+   
+#define DHTTYPE DHT11   // DHT 11
+
+
+int led = 13;
+//sensores
+int humedadsuelo = 2;   //humedad suelo (0 analog)
+int pinLDR = 7;        //Pin para la LDR (7 analog)
+#define DHTPIN1 46        //Pin para sensor (2 data)
+#define DHTPIN2 32       //Pin para sensor (3 data)
+//variables
+int valorLDR = 0;       //Aquí almacenamos los datos recogidos de los LDR
+int LUZ = 200;
+
+//Elementos
+int regadio = (52);       
+int secador = (37);       
+int frio = (48);          
+int humi = (32);           
+int deshumi = (52);       
+int iluminacion = (34);    
+
+
+//misc humedadtemp
+DHT dht1(DHTPIN1, DHTTYPE);
+DHT dht2(DHTPIN2, DHTTYPE);
+
+
+
+void setup() {                
+  
+  pinMode(led, OUTPUT); 
+  pinMode(regadio, OUTPUT); 
+  pinMode(secador, OUTPUT);
+  pinMode(frio, OUTPUT); 
+  pinMode(humi, OUTPUT);
+  pinMode(deshumi, OUTPUT); 
+  pinMode(iluminacion, OUTPUT);
+  Serial.begin(9600);  
+  dht1.begin();
+  dht2.begin();
+}
+
+
+void loop() {
+  
+   valorLDR = analogRead(pinLDR)   ;  
+  
+  Serial.print("Valor LDR: ");                          
+  Serial.println(valorLDR); 
+  
+  
+  Serial.print("Humedad suelo:");
+  Serial.println(analogRead(humedadsuelo));  
+  
+   float humedad1 = dht1.readHumidity();
+   float temperatura1 = dht1.readTemperature();
+   float humedad2 = dht2.readHumidity();
+   float temperatura2 = dht2.readTemperature();
+   float humedad = (humedad1+humedad2)/2;
+   float temperatura = (temperatura1+temperatura2)/2;
+    Serial.print("Humidity: ");
+    Serial.print(humedad);
+    Serial.print(" %\t");
+    Serial.print("Temperature: ");
+    Serial.print(temperatura);
+    Serial.println(" *C");
+    Serial.println("");
+    Serial.println("");
+     
+    delay(1000);
+   
+               //Guardamos el valor leido en una variable
+  if(valorLDR<LUZ) digitalWrite(iluminacion, HIGH);   // Si el valor de la resistencia es menor al deseado (#DEFINE) encendemos la iluminacion
+  else digitalWrite(iluminacion, LOW);                  // Si la resistencia aumenta apagamos la iluminacion
+      digitalWrite(humi, HIGH); 
+      
+     
+    if(humedad>93.5) digitalWrite(deshumi, HIGH);   // Si el valor de la resistencia es menor al deseado (#DEFINE) encendemos la iluminacion
+     if(humedad<93.5) digitalWrite(deshumi, LOW);
+     
+     
+     if(humedad<95) digitalWrite(humi, HIGH);   // Si el valor de la resistencia es menor al deseado (#DEFINE) encendemos la iluminacion
+     if(humedad>95) digitalWrite(humi, LOW);
+     
+     
+     if(temperatura<15) digitalWrite(secador, HIGH);   // Si el valor de la resistencia es menor al deseado (#DEFINE) encendemos la iluminacion
+     if(temperatura>15) digitalWrite(secador, LOW);
+     
+     if(temperatura>10) digitalWrite(frio, HIGH);   // Si el valor de la resistencia es menor al deseado (#DEFINE) encendemos la iluminacion
+     if(temperatura<10) digitalWrite(frio, LOW);
+     
+}
