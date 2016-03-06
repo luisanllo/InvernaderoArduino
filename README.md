@@ -1,5 +1,5 @@
-Invernadero automatico creado con arduino
+Invernadero automático creado con arduino || Automatic arduino greenhouse
 ===========
-Proyecto realizado con arduino mega y diferentes aperos.
 
-Más informacion del proyecto en la wiki de bricolabs http://bricolabs.cc/wiki/index.php?title=Invernadero_arduino
+Más información del proyecto en la wiki de Bricolabs http://bricolabs.cc/wiki/index.php?title=Invernadero_arduino
+More information on the website http://bricolabs.cc/wiki/index.php?title=Invernadero_arduino (Spanish)
